@@ -11,6 +11,9 @@ public class Item {
         this.productPrice = productPrice;
     }
 
+    public Item() {
+    }
+
     public double getValueOfItem() {
         return productCount * productPrice;
     }
@@ -22,11 +25,31 @@ public class Item {
                 +padLeft(String.format("%1.2f", getValueOfItem()), 10)+" zł";
     }
 
-    public static String padRight(String s, int n) {
+    private static String padRight(String s, int n) {
         return String.format("%1$-" + n + "s", s);
     }
 
-    public static String padLeft(String s, int n) {
+    private static String padLeft(String s, int n) {
         return String.format("%1$" + n + "s", s);
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getProductCount() {
+        return productCount;
     }
 }
