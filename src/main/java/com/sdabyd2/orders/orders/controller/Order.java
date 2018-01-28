@@ -2,11 +2,12 @@ package com.sdabyd2.orders.orders.controller;
 
 import com.sdabyd2.orders.orders.model.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Order {
+public class Order implements Serializable {
 
     private List<Item> items = new ArrayList<>();
     private int maxItemsInOrder;
@@ -36,19 +37,27 @@ public class Order {
 
     public double getValueOfOrder() {
         Double value = 0.00;
+        Double rebateValue = 0.00;
         for (int i = 0; i < items.size(); i++) {
             value += items.get(i).getValueOfItem();
+            rebateValue += value - items.get(i).getValueOfItemIncludingRebate();
         }
         return value;
     }
 
     @Override
     public String toString() {
+        Double value = 0.00;
+        Double rebatedValue = 0.00;
         String result = "\nZamówienie:";
         for (int i = 0; i < items.size(); i++) {
             result += "\n" + items.get(i).toString();
+            rebatedValue += items.get(i).getValueOfItem() - items.get(i).getValueOfItemIncludingRebate();
         }
-        return result + "\n\nRazem: " + String.format("%1.2f", getValueOfOrder());
+        value = getValueOfOrder();
+        return result + "\n\nRazem: " + String.format("%1.2f", value)
+                +"\nRabat: " + String.format("%1.2f", rebatedValue)
+                +"\nRazem po rabacie: " + String.format("%1.2f", rebatedValue);
     }
 
     public void eraseItem(int index) {

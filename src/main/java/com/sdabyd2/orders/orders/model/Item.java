@@ -1,6 +1,8 @@
 package com.sdabyd2.orders.orders.model;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     private String productName;
     private int productCount;
     private double productPrice;
@@ -16,6 +18,21 @@ public class Item {
 
     public double getValueOfItem() {
         return productCount * productPrice;
+    }
+
+    public double getValueOfItemIncludingRebate() {
+        Double rebatedValue = getValueOfItem();
+        if (this.productCount > 5 && this.productCount <= 10) {
+            rebatedValue *= 1-.05;
+        } else
+            if (this.productCount > 10 && this.productCount <= 20) {
+                rebatedValue *= 1 - .1;
+            } else {
+                if (this.productCount > 20) {
+                    rebatedValue *= 1 - .15;
+            }
+        }
+        return rebatedValue;
     }
 
     public String toString() {
