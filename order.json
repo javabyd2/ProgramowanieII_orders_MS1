@@ -1,1 +1,1 @@
-{"items":[{"productName":"Cukier","productCount":3,"productPrice":4.0,"valueOfItemIncludingRebate":12.0,"valueOfItem":12.0},{"productName":"Bagietka","productCount":26,"productPrice":2.5,"valueOfItemIncludingRebate":55.25,"valueOfItem":65.0}],"maxItemsInOrder":20,"valueOfOrder":77.0}
+{"items":[{"productName":"Cukier","productCount":3,"productPrice":4.0},{"productName":"Bagietka","productCount":26,"productPrice":2.5}],"maxItemsInOrder":20}

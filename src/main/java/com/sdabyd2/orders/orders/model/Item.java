@@ -16,12 +16,12 @@ public class Item implements Serializable {
     public Item() {
     }
 
-    public double getValueOfItem() {
+    public double countValueOfItem() {
         return productCount * productPrice;
     }
 
-    public double getValueOfItemIncludingRebate() {
-        Double rebatedValue = getValueOfItem();
+    public double countValueOfItemIncludingRebate() {
+        Double rebatedValue = countValueOfItem();
         if (this.productCount > 5 && this.productCount <= 10) {
             rebatedValue *= 1-.05;
         } else
@@ -39,7 +39,7 @@ public class Item implements Serializable {
         return padRight(productName, 20)
                 +padLeft(String.format("%1.2f", productPrice), 10)+" zł"
                 +padLeft(String.format("%d", productCount), 4)+" szt."
-                +padLeft(String.format("%1.2f", getValueOfItem()), 10)+" zł";
+                +padLeft(String.format("%1.2f", countValueOfItem()), 10)+" zł";
     }
 
     private static String padRight(String s, int n) {

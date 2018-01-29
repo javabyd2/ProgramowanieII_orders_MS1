@@ -36,14 +36,14 @@ public class Order implements Serializable {
         }
     }
 
-    public double getValueOfOrder() {
+    public double countValueOfOrder() {
         Double value = 0.00;
         for (int i = 0; i < items.size(); i++) {
-            value += items.get(i).getValueOfItem();
+            value += items.get(i).countValueOfItem();
         }
         return value;
     }
-
+    
     @Override
     public String toString() {
         Double value = 0.00;
@@ -51,8 +51,8 @@ public class Order implements Serializable {
         String result = "\nZamówienie:";
         for (int i = 0; i < items.size(); i++) {
             result += "\n" + items.get(i).toString();
-            value += items.get(i).getValueOfItem();
-            rebatValue += items.get(i).getValueOfItem() - items.get(i).getValueOfItemIncludingRebate();
+            value += items.get(i).countValueOfItem();
+            rebatValue += items.get(i).countValueOfItem() - items.get(i).countValueOfItemIncludingRebate();
         }
         return result + "\n\nRazem: " + String.format("%1.2f", value)
                 +"\nRabat: " + String.format("%1.2f", rebatValue)
@@ -94,7 +94,7 @@ public class Order implements Serializable {
             }
             bufferedReader.close();
         } catch (IOException e) {
-            System.out.println("Wystąpił problem z odczytem pliku zamówienia");
+            System.out.println("Wystąpił problem z odczytem pliku zamówienia. "+e.getMessage());
         }
         return order;
     }
