@@ -1,8 +1,9 @@
 package com.sdabyd2.orders.orders.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdabyd2.orders.orders.model.Item;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,10 +38,8 @@ public class Order implements Serializable {
 
     public double getValueOfOrder() {
         Double value = 0.00;
-        Double rebateValue = 0.00;
         for (int i = 0; i < items.size(); i++) {
             value += items.get(i).getValueOfItem();
-            rebateValue += value - items.get(i).getValueOfItemIncludingRebate();
         }
         return value;
     }
@@ -48,25 +47,24 @@ public class Order implements Serializable {
     @Override
     public String toString() {
         Double value = 0.00;
-        Double rebatedValue = 0.00;
+        Double rebatValue = 0.00;
         String result = "\nZamówienie:";
         for (int i = 0; i < items.size(); i++) {
             result += "\n" + items.get(i).toString();
-            rebatedValue += items.get(i).getValueOfItem() - items.get(i).getValueOfItemIncludingRebate();
+            value += items.get(i).getValueOfItem();
+            rebatValue += items.get(i).getValueOfItem() - items.get(i).getValueOfItemIncludingRebate();
         }
-        value = getValueOfOrder();
         return result + "\n\nRazem: " + String.format("%1.2f", value)
-                +"\nRabat: " + String.format("%1.2f", rebatedValue)
-                +"\nRazem po rabacie: " + String.format("%1.2f", rebatedValue);
+                +"\nRabat: " + String.format("%1.2f", rebatValue)
+                +"\nRazem po rabacie: " + String.format("%1.2f", value - rebatValue);
     }
 
-    public void eraseItem(int index) {
+    public void deleteItem(int index) {
         items.remove(index);
     }
 
     public void editItem(int index) {
-        Item item = new Item();
-        item = items.get(index);
+        Item item = items.get(index);
 
         Scanner input = new Scanner(System.in);
         System.out.println("Edycja pozycji:\n"+items.get(index).toString());
@@ -76,5 +74,44 @@ public class Order implements Serializable {
         item.setProductCount(input.nextInt());
         System.out.print("Proszę podać cenę jednostkową: ");
         item.setProductPrice(input.nextDouble());
+    }
+
+    public static void saveOrderToFile(Order order, String fileName) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        File filename = new File(fileName+".json");
+        filename.createNewFile();
+        mapper.writeValue(filename, order);
+    }
+
+    public static Order loadOrderFromFile(String fileName) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Order order = new Order();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName+".json"));
+            String json;
+            while ((json = bufferedReader.readLine()) != null) {
+                order = objectMapper.readValue(json, Order.class);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println("Wystąpił problem z odczytem pliku zamówienia");
+        }
+        return order;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public int getMaxItemsInOrder() {
+        return maxItemsInOrder;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public void setMaxItemsInOrder(int maxItemsInOrder) {
+        this.maxItemsInOrder = maxItemsInOrder;
     }
 }

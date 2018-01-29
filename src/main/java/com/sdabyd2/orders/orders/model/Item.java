@@ -69,4 +69,8 @@ public class Item implements Serializable {
     public int getProductCount() {
         return productCount;
     }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
 }
